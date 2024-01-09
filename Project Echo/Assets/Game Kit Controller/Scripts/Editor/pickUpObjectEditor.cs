@@ -1,0 +1,314 @@
+﻿using UnityEngine;
+using System.Collections;
+
+#if UNITY_EDITOR
+using UnityEditor;
+
+[CanEditMultipleObjects]
+[CustomEditor (typeof(pickUpObject))]
+public class pickUpObjectEditor : Editor
+{
+	SerializedProperty amount;
+	SerializedProperty useAmountPerUnit;
+	SerializedProperty amountPerUnit;
+
+	SerializedProperty useDurability;
+
+	SerializedProperty maxDurabilityAmount;
+
+	SerializedProperty durabilityAmount;
+
+	SerializedProperty playerTag;
+	SerializedProperty friendTag;
+	SerializedProperty enemyTag;
+
+	SerializedProperty pickUpSound;
+	SerializedProperty pickUpSoundAudioElement;
+	SerializedProperty staticPickUp;
+	SerializedProperty moveToPlayerOnTrigger;
+	SerializedProperty pickUpOption;
+	SerializedProperty mainPickupType;
+	SerializedProperty canBeExamined;
+	SerializedProperty examiningObject;
+	SerializedProperty ignoreExamineObjectBeforeStoreEnabled;
+	SerializedProperty showPickupInfoOnTaken;
+	SerializedProperty usePickupIconOnScreen;
+	SerializedProperty pickupIconGeneralName;
+	SerializedProperty pickupIconName;
+	SerializedProperty usePickupIconOnTaken;
+	SerializedProperty pickupIcon;
+	SerializedProperty usableByAnything;
+	SerializedProperty usableByPlayer;
+	SerializedProperty usableByVehicles;
+	SerializedProperty usableByCharacters;
+	SerializedProperty useEventOnTaken;
+	SerializedProperty eventOnTaken;
+	SerializedProperty useEventOnRemainingAmount;
+	SerializedProperty eventOnRemainingAmount;
+	SerializedProperty sendPickupFinder;
+	SerializedProperty sendPickupFinderEvent;
+
+	SerializedProperty useRemoteEvent;
+
+	SerializedProperty remoteEventList;
+
+	SerializedProperty inventoryObjectManager;
+
+	SerializedProperty deviceStringActionManager;
+
+	SerializedProperty mainSphereCollider;
+	SerializedProperty mainCollider;
+
+	SerializedProperty mainRigidbody;
+
+	SerializedProperty mainPickupManagerName;
+
+	SerializedProperty showDebugPrint;
+
+	pickUpObject manager;
+
+	void OnEnable ()
+	{
+		amount = serializedObject.FindProperty ("amount");
+		useAmountPerUnit = serializedObject.FindProperty ("useAmountPerUnit");
+		amountPerUnit = serializedObject.FindProperty ("amountPerUnit");
+
+		useDurability = serializedObject.FindProperty ("useDurability");
+		maxDurabilityAmount = serializedObject.FindProperty ("maxDurabilityAmount");
+
+		durabilityAmount = serializedObject.FindProperty ("durabilityAmount");
+
+		pickUpSound = serializedObject.FindProperty ("pickUpSound");
+		pickUpSoundAudioElement = serializedObject.FindProperty ("pickUpSoundAudioElement");
+		staticPickUp = serializedObject.FindProperty ("staticPickUp");
+		moveToPlayerOnTrigger = serializedObject.FindProperty ("moveToPlayerOnTrigger");
+		pickUpOption = serializedObject.FindProperty ("pickUpOption");
+		mainPickupType = serializedObject.FindProperty ("mainPickupType");
+		canBeExamined = serializedObject.FindProperty ("canBeExamined");
+		examiningObject = serializedObject.FindProperty ("examiningObject");
+		ignoreExamineObjectBeforeStoreEnabled = serializedObject.FindProperty ("ignoreExamineObjectBeforeStoreEnabled");
+		showPickupInfoOnTaken = serializedObject.FindProperty ("showPickupInfoOnTaken");
+		usePickupIconOnScreen = serializedObject.FindProperty ("usePickupIconOnScreen");
+		pickupIconGeneralName = serializedObject.FindProperty ("pickupIconGeneralName");
+		pickupIconName = serializedObject.FindProperty ("pickupIconName");
+		usePickupIconOnTaken = serializedObject.FindProperty ("usePickupIconOnTaken");
+		pickupIcon = serializedObject.FindProperty ("pickupIcon");
+		usableByAnything = serializedObject.FindProperty ("usableByAnything");
+		usableByPlayer = serializedObject.FindProperty ("usableByPlayer");
+		usableByVehicles = serializedObject.FindProperty ("usableByVehicles");
+		usableByCharacters = serializedObject.FindProperty ("usableByCharacters");
+		useEventOnTaken = serializedObject.FindProperty ("useEventOnTaken");
+		eventOnTaken = serializedObject.FindProperty ("eventOnTaken");
+		useEventOnRemainingAmount = serializedObject.FindProperty ("useEventOnRemainingAmount");
+		eventOnRemainingAmount = serializedObject.FindProperty ("eventOnRemainingAmount");
+		sendPickupFinder = serializedObject.FindProperty ("sendPickupFinder");
+		sendPickupFinderEvent = serializedObject.FindProperty ("sendPickupFinderEvent");
+
+		useRemoteEvent = serializedObject.FindProperty ("useRemoteEvent");
+
+		remoteEventList = serializedObject.FindProperty ("remoteEventList");
+
+		inventoryObjectManager = serializedObject.FindProperty ("inventoryObjectManager");
+
+		deviceStringActionManager = serializedObject.FindProperty ("deviceStringActionManager");
+
+		mainSphereCollider = serializedObject.FindProperty ("mainSphereCollider");
+		mainCollider = serializedObject.FindProperty ("mainCollider");
+
+		mainRigidbody = serializedObject.FindProperty ("mainRigidbody");
+
+		mainPickupManagerName = serializedObject.FindProperty ("mainPickupManagerName");
+
+		playerTag = serializedObject.FindProperty ("playerTag");
+		friendTag = serializedObject.FindProperty ("friendTag");
+		enemyTag = serializedObject.FindProperty ("enemyTag");
+
+		showDebugPrint = serializedObject.FindProperty ("showDebugPrint");
+
+		manager = (pickUpObject)target;
+	}
+
+	public override void OnInspectorGUI ()
+	{
+		GUILayout.BeginVertical (GUILayout.Height (30));
+
+		EditorGUILayout.Space ();
+
+		GUILayout.BeginVertical ("Main Settings", "window");
+		EditorGUILayout.PropertyField (amount);
+		EditorGUILayout.PropertyField (useAmountPerUnit);
+		if (useAmountPerUnit.boolValue) {
+			EditorGUILayout.PropertyField (amountPerUnit);
+		}
+	
+		EditorGUILayout.PropertyField (pickUpSound);
+		EditorGUILayout.PropertyField (pickUpSoundAudioElement);
+		EditorGUILayout.PropertyField (staticPickUp);
+		EditorGUILayout.PropertyField (moveToPlayerOnTrigger);
+		EditorGUILayout.PropertyField (pickUpOption);
+
+		EditorGUILayout.PropertyField (mainPickupType);
+		EditorGUILayout.PropertyField (mainPickupManagerName);
+		GUILayout.EndVertical ();
+
+		EditorGUILayout.Space ();
+
+		GUILayout.BeginVertical ("Durability Settings", "window");
+		EditorGUILayout.PropertyField (useDurability);
+		if (useDurability.boolValue) {
+			EditorGUILayout.PropertyField (maxDurabilityAmount);
+			EditorGUILayout.PropertyField (durabilityAmount);
+		}
+		GUILayout.EndVertical ();
+
+		EditorGUILayout.Space ();
+
+		GUILayout.BeginVertical ("Examine Settings", "window");
+		EditorGUILayout.PropertyField (canBeExamined);
+		if (canBeExamined.boolValue) {
+			GUILayout.Label ("Examining Object\t" + examiningObject.boolValue);
+		}
+
+		EditorGUILayout.PropertyField (ignoreExamineObjectBeforeStoreEnabled);
+		GUILayout.EndVertical ();
+
+		EditorGUILayout.Space ();
+
+		GUILayout.BeginVertical ("Icon Settings", "window");
+		EditorGUILayout.PropertyField (showPickupInfoOnTaken);
+
+		EditorGUILayout.PropertyField (usePickupIconOnScreen);
+		if (usePickupIconOnScreen.boolValue) {
+			EditorGUILayout.PropertyField (pickupIconGeneralName);
+			EditorGUILayout.PropertyField (pickupIconName);
+		}
+		EditorGUILayout.PropertyField (usePickupIconOnTaken);
+		if (usePickupIconOnTaken.boolValue) {
+			EditorGUILayout.PropertyField (pickupIcon);
+		}
+		GUILayout.EndVertical ();
+
+		EditorGUILayout.Space ();
+
+		GUILayout.BeginVertical ("Pick Up Used By", "window");
+		EditorGUILayout.PropertyField (usableByAnything);
+		if (!usableByAnything.boolValue) {
+			EditorGUILayout.PropertyField (usableByPlayer);
+			EditorGUILayout.PropertyField (usableByVehicles);
+			EditorGUILayout.PropertyField (usableByCharacters);
+		}
+
+		EditorGUILayout.Space ();
+
+		EditorGUILayout.PropertyField (playerTag);
+		EditorGUILayout.PropertyField (friendTag);
+		EditorGUILayout.PropertyField (enemyTag);
+
+		GUILayout.EndVertical ();
+
+		EditorGUILayout.Space ();
+
+		GUILayout.BeginVertical ("Pick Up Taken Event Settings", "window");
+		EditorGUILayout.PropertyField (useEventOnTaken);
+		if (useEventOnTaken.boolValue) {
+			EditorGUILayout.PropertyField (eventOnTaken);
+
+			EditorGUILayout.PropertyField (useEventOnRemainingAmount);
+			if (useEventOnRemainingAmount.boolValue) {
+				EditorGUILayout.PropertyField (eventOnRemainingAmount);
+			}
+		}
+
+		EditorGUILayout.Space ();
+
+		EditorGUILayout.PropertyField (sendPickupFinder);
+		if (sendPickupFinder.boolValue) {
+			EditorGUILayout.PropertyField (sendPickupFinderEvent);
+		}
+
+		EditorGUILayout.Space ();
+	
+		EditorGUILayout.PropertyField (useRemoteEvent);
+		if (useRemoteEvent.boolValue) {
+			showSimpleList (remoteEventList);
+		}
+
+		EditorGUILayout.Space ();
+
+		GUILayout.EndVertical ();
+
+		EditorGUILayout.Space ();
+
+		if (GUILayout.Button ("Update Pickup Components")) {
+			manager.assignPickupElementsOnEditor ();
+		}
+			
+		EditorGUILayout.Space ();
+
+		GUILayout.BeginVertical ("Debug", "window");
+		EditorGUILayout.PropertyField (showDebugPrint);
+		GUILayout.EndVertical ();
+
+		EditorGUILayout.Space ();
+
+		GUILayout.BeginVertical ("Object Components", "window");
+		EditorGUILayout.PropertyField (inventoryObjectManager);
+		EditorGUILayout.PropertyField (deviceStringActionManager);
+		EditorGUILayout.PropertyField (mainSphereCollider);
+		EditorGUILayout.PropertyField (mainCollider);
+		EditorGUILayout.PropertyField (mainRigidbody);
+		GUILayout.EndVertical ();
+	
+		EditorGUILayout.Space ();
+
+		GUILayout.EndVertical ();
+		if (GUI.changed) {
+			serializedObject.ApplyModifiedProperties ();
+		}
+	}
+
+	void showSimpleList (SerializedProperty list)
+	{
+		EditorGUILayout.Space ();
+
+		if (GUILayout.Button ("Show/Hide " + list.displayName)) {
+			list.isExpanded = !list.isExpanded;
+		}
+
+		EditorGUILayout.Space ();
+
+		if (list.isExpanded) {
+			EditorGUILayout.Space ();
+
+			GUILayout.Label ("Number Of Elements: \t" + list.arraySize);
+
+			EditorGUILayout.Space ();
+
+			GUILayout.BeginHorizontal ();
+			if (GUILayout.Button ("Add")) {
+				list.arraySize++;
+			}
+			if (GUILayout.Button ("Clear")) {
+				list.arraySize = 0;
+			}
+			GUILayout.EndHorizontal ();
+
+			EditorGUILayout.Space ();
+
+			for (int i = 0; i < list.arraySize; i++) {
+				GUILayout.BeginHorizontal ();
+				if (i < list.arraySize && i >= 0) {
+					EditorGUILayout.PropertyField (list.GetArrayElementAtIndex (i), new GUIContent ("", null, ""), false);
+				}
+				GUILayout.BeginHorizontal ();
+				if (GUILayout.Button ("x")) {
+					list.DeleteArrayElementAtIndex (i);
+					return;
+				}
+				GUILayout.EndHorizontal ();
+				GUILayout.EndHorizontal ();
+			}
+		}       
+	}
+}
+#endif
